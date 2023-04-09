@@ -1,22 +1,23 @@
 pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube Server') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
+  agent any
+
+  tools {
+    maven 'Maven'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh './mvnw clean install'
+      }
     }
+
+    stage('SonarQube analysis') {
+      steps {
+        withSonarQubeEnv('SonarQube') {
+          sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin'
+        }
+      }
+    }
+  }
 }
