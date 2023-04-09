@@ -14,7 +14,7 @@ pipeline {
 
     stage('SonarQube analysis') {
       steps {
-        withSonarQubeEnv('SonarQube') {
+        withSonarQubeEnv('My SonarQube Server') {
           sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin'
         }
       }
